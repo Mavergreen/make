@@ -4,10 +4,10 @@
 #          Builds the GNU Make release UPSTREAM_VERSION names for one arch with mk_toolchain's clang22, in
 #          a hermetic environment, with make's own configure and build.sh (so building it needs no make),
 #          and stages it under DIR/usr/local/mavergreen/make, replacing any tree there: bin/make, bin/gmake
-#          (a link to make), include/gnumake.h, share/man/man1/make.1 and gmake.1 (a link), and
-#          share/info/make.info*. The staged make passes shipyard's compat guard for ARCH before this
-#          exits 0. Work happens in a fresh $MAVERICKS_BUILD_ROOT/make/build-ARCH.XXXXXX, removed on
-#          success. Build output goes to stderr.
+#          (a link to make), include/gnumake.h, share/man/man1/make.1 and gmake.1 (a link),
+#          share/info/make.info*, and share/doc/make/COPYING (the GPL). The staged make passes shipyard's
+#          compat guard for ARCH before this exits 0. Work happens in a fresh
+#          $MAVERICKS_BUILD_ROOT/make/build-ARCH.XXXXXX, removed on success. Build output goes to stderr.
 set -eu
 here="$(cd "$(dirname "$0")" && pwd)"
 MAVERICKS_ROOT="$(cd "$here/.." && pwd)"; export MAVERICKS_ROOT
@@ -56,7 +56,7 @@ srcrel="../${src#"$work"/}"
 
 tree="$stage$prefix"
 rm -rf "$tree"
-mkdir -p "$tree/bin" "$tree/include" "$tree/share/man/man1" "$tree/share/info"
+mkdir -p "$tree/bin" "$tree/include" "$tree/share/man/man1" "$tree/share/info" "$tree/share/doc/make"
 cp "$work/obj/make" "$tree/bin/make"
 chmod 755 "$tree/bin/make"
 ln -s make "$tree/bin/gmake"
@@ -64,7 +64,8 @@ cp "$src/src/gnumake.h" "$tree/include/gnumake.h"
 cp "$src/doc/make.1" "$tree/share/man/man1/make.1"
 ln -s make.1 "$tree/share/man/man1/gmake.1"
 cp "$src"/doc/make.info "$src"/doc/make.info-[0-9]* "$tree/share/info/"
-chmod 644 "$tree/include/gnumake.h" "$tree/share/man/man1/make.1" "$tree"/share/info/*
+cp "$src/COPYING" "$tree/share/doc/make/COPYING"
+chmod 644 "$tree/include/gnumake.h" "$tree/share/man/man1/make.1" "$tree"/share/info/* "$tree/share/doc/make/COPYING"
 
 MAVERICKS_ALLOW_ARCHS="$arch" MAVERICKS_DEVIATIONS_ROOT="$MAVERICKS_ROOT" \
   LIPO="$CLANG22_BIN/llvm-lipo" OTOOL="$CLANG22_BIN/llvm-otool" NM="$CLANG22_BIN/llvm-nm" \

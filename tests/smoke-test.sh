@@ -23,11 +23,11 @@ B="$CLANG22_BIN"
 
 [ "$(readlink "$prefix/bin/gmake")" = make ] || fail "bin/gmake does not link to make"
 [ "$(readlink "$prefix/share/man/man1/gmake.1")" = make.1 ] || fail "share/man/man1/gmake.1 does not link to make.1"
-for f in include/gnumake.h share/man/man1/make.1 share/info/make.info; do
+for f in include/gnumake.h share/man/man1/make.1 share/info/make.info share/doc/make/COPYING; do
   [ -f "$prefix/$f" ] || fail "the stage has no $f"
 done
 others="$(cd "$prefix" && find . -type f | grep -v -x -e ./bin/make -e ./include/gnumake.h -e ./share/man/man1/make.1 \
-  -e './share/info/make\.info\(-[0-9]*\)\{0,1\}' -e ./mavergreen.plist || true)"
+  -e './share/info/make\.info\(-[0-9]*\)\{0,1\}' -e ./share/doc/make/COPYING -e ./mavergreen.plist || true)"
 [ -z "$others" ] || fail "the stage carries files nothing installs: $others"
 
 archs="$("$B/llvm-lipo" -info "$make" | sed -n 's/.*: //p' | xargs)" || fail "llvm-lipo cannot read $make"
