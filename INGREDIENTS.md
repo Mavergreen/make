@@ -62,6 +62,13 @@ make's `COPYING` as the license, and `stage_product.sh`'s manifest and install s
 the tree's `bin` and `share/man` is exported, so the family's `PATH` gets `gmake` and `make`, and its
 `MANPATH` `gmake.1` and `make.1`; the info manual is not exported, and is read by path.
 
+## What a release carries
+
+`make-<version>.pkg`, the feed `make.xml`, and `make-<upstream>.tar.gz`: the GNU Make source tarball
+the release was built from, the bytes `UPSTREAM_SHA256` pins, checked again as they are attached. GNU
+Make is GPLv3, and a binary's source offer should not depend on GNU's server keeping an old tarball.
+`publish-release.yml` adds `SHA256SUMS` over all three.
+
 ## How the updater is built
 
 `CMakeLists.txt` is the Sparkle updater, "Mavericks GNU Make", with the generic app icon by explicit

@@ -16,5 +16,8 @@ release points Apple's `make` at this one.
 The tree's own `bin` holds `make` and `gmake`, so a build that puts
 `/usr/local/mavergreen/make/bin` first on its `PATH` finds this make under either name.
 
+Each release carries, beside the installer, the GNU Make source tarball it was built from
+(`make-<version>.tar.gz`, unmodified, the bytes GNU published).
+
 This is an unofficial community build. It is not affiliated with, endorsed by or supported by the
 GNU Project or the Free Software Foundation.
