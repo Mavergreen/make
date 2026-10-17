@@ -1,0 +1,1 @@
+VERSION    # release.yml stamps the resolved version here; the updater build reads it, or writes it when absent

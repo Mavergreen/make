@@ -1,0 +1,42 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "github>Mavergreen/shipyard"
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "GNU Make's version. GNU signs with GPG and publishes no checksum, so UPSTREAM_SHA256 moves by hand, and until it does the bump's build fails at the fetch, naming the SHA-256 it got.",
+      "managerFilePatterns": [
+        "/^UPSTREAM_VERSION$/"
+      ],
+      "matchStrings": [
+        "^(?<currentValue>.+?)\\s*$"
+      ],
+      "depNameTemplate": "make",
+      "packageNameTemplate": "https://git.savannah.gnu.org/git/make.git",
+      "datasourceTemplate": "git-tags"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^components/clang22/version$/"
+      ],
+      "matchStrings": [
+        "^(?<currentValue>\\S+)\\s*$"
+      ],
+      "depNameTemplate": "Mavergreen/clang-22",
+      "datasourceTemplate": "github-releases",
+      "versioningTemplate": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)-mavericks\\.(?<build>\\d+)$"
+    }
+  ],
+  "packageRules": [
+    {
+      "description": "GNU Make tags its release candidates X.Y.9N and X.Y.Z.9N (4.3.90, 4.4.0.91); only releases may move the pin.",
+      "matchDepNames": [
+        "make"
+      ],
+      "allowedVersions": "/^\\d+\\.\\d+(\\.[0-8]?\\d)?$/"
+    }
+  ]
+}
